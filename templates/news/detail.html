@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} {{ data.title }} {% endblock %}
+
+{% block content %}
+
+<h1>{{ data.title }} </h1>
+
+<p>{{ data.text }}</p>
+
+{{ data.author }},
+<em>{{ data.pub_date }}
+
+<br><br><br><h2>Комментарии:</h2>
+{% if comments %}
+    {% for c in comments %}
+        <p><strong>{{ c.author_name }}</strong>
+        <p>{{ c.comment_text }}
+    {% endfor %}
+{% endif %}
+
+<p></p>
+<form action="{% url 'add_comment' data.id %}" method="post">
+    {% csrf_token %}
+
+	<input type="text" placeholder="Ваше имя" name="name">
+	<br>
+	<textarea type="text" placeholder="Текст комментария" cols="30" rows="10" name="comment"></textarea>
+
+	<br>
+	<button type="submit">Оставить комментарий</button>
+</form>
+
+{% endblock %}
