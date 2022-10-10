@@ -1,5 +1,4 @@
 from django.db import models
-from datetime import datetime
 
 
 class News(models.Model):
@@ -17,7 +16,7 @@ class News(models.Model):
 
 
 class Comment(models.Model):
-    article = models.ForeignKey(News, on_delete=models.CASCADE)
+    news = models.ForeignKey(News, on_delete=models.CASCADE)
     author_name = models.CharField("автор", max_length=50)
     comment_text = models.CharField("текст комментария", max_length=200)
 
