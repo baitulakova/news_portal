@@ -11,6 +11,9 @@
         {% for n in latest_news %}
             <p> {{ n.pub_date }}
             <a href="{% url 'news_detail' n.id %}">{{n.title}}</a>
+                {% if n.was_published_recently %}
+                    <strong style="color:red">NEW</strong>
+                {% endif %}
             </p>
         {% endfor %}
 

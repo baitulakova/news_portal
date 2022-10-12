@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime, timezone, timedelta
 
 
 class News(models.Model):
@@ -13,6 +14,9 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+
+    def was_published_recently(self):
+        return self.pub_date.astimezone(timezone.utc) >= datetime.now(timezone.utc) - timedelta(minutes=1)
 
 
 class Comment(models.Model):

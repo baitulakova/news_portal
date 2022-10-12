@@ -3,13 +3,18 @@ from django.http import Http404, HttpResponseRedirect
 from .models import News
 from django.urls import reverse
 
+default_news_list_html_template_path = 'news/list.html'
+default_news_detail_html_template_path = 'news/detail.html'
 
-def news_feed(request):
+
+def news_feed(request, tmp_path=None):
+    if tmp_path is None:
+        tmp_path = default_news_list_html_template_path
     latest_news = News.objects.order_by('-pub_date')
-    return render(request, 'news/list.html', {'latest_news': latest_news})
+    return render(request, tmp_path, {'latest_news': latest_news})
 
 
-def news_detail(request, news_id):
+def news_detail(request, news_id, tmp_path=None):
     try:
         n = News.objects.get(id=news_id)
     except:
@@ -17,7 +22,10 @@ def news_detail(request, news_id):
 
     comments = n.comment_set.order_by('id')
 
-    return render(request, 'news/detail.html', {'data': n, 'comments': comments})
+    if tmp_path is None:
+        tmp_path = default_news_detail_html_template_path
+
+    return render(request, tmp_path, {'data': n, 'comments': comments})
 
 
 def add_comment(request, news_id):
