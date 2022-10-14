@@ -22,10 +22,10 @@ class NewsTest(TestCase):
 
     def test_was_published_recently(self):
         n = News.objects.get(title='test-1')
-        self.assertEqual(True, n.was_published_recently())
+        assert n.was_published_recently() is True
 
         n = News.objects.get(title='test-2')
-        self.assertEqual(False, n.was_published_recently())
+        assert n.was_published_recently() is False
 
 
 class ViewsTestNoNewsCase(TestCase):
@@ -41,7 +41,7 @@ class ViewsTestNoNewsCase(TestCase):
     def test_news_feed(self):
         req = HttpRequest()
         resp = news_feed(req, "test_html_tmp.html")
-        self.assertEqual("b'No news'", str(resp.content))
+        assert "b'No news'" == str(resp.content)
 
     def test_get_news_by_id(self):
         req = HttpRequest()
@@ -80,7 +80,7 @@ class ViewsTest(TestCase):
         resp = news_feed(req, "test_html_tmp.html")
         # we create 2 news in 0002_insert_test_data.py migration
         expected = """b'Tue, 11 Oct 2022 18:07:21 +0600 \\n<a href="/news/1/">Lorem Ipsum</a>\\nTue, 11 Oct 2022 18:07:21 +0600 \\n<a href="/news/2/">Suspendisse potenti.</a>\\n\\n'"""
-        self.assertHTMLEqual(expected, str(resp.content))
+        assert expected == str(resp.content)
 
     def test_news_detail(self):
         self.update_data()
@@ -89,7 +89,7 @@ class ViewsTest(TestCase):
         # we create 2 news in 0002_insert_test_data.py migration
         resp = news_detail(req, 1, "test_html_tmp_detail.html")
         expected = """b'Title: Lorem Ipsum Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultricies dictum nibh. Aenean eget elit elit. Integer sit amet tellus quis eros pellentesque semper vitae at risus. Aliquam eget odio nunc. Nunc bibendum tincidunt elementum. Suspendisse a mauris suscipit, laoreet enim vel, hendrerit nulla. Pellentesque tristique quam non semper semper.Donec a posuere nisl. Sed sapien massa, blandit sed dignissim tristique, egestas non nisl. Proin non nunc id quam sagittis imperdiet sed sed urna. Suspendisse pulvinar vel orci nec condimentum. Proin volutpat fermentum dictum. In posuere at elit tristique pretium. Sed eget lectus sit amet risus commodo congue. Vivamus vehicula semper libero quis sagittis. Pellentesque ut ultrices odio, ut commodo urna. Quisque varius suscipit luctus. Cras commodo vehicula dapibus. In in tempor mi, non feugiat eros. In a diam urna. Duis at felis lectus. Nam auctor viverra nisl quis faucibus. AuthorJohn Doe Pub_dateTue, 11 Oct 2022 18:07:21 +0600'"""
-        self.assertEqual(expected, str(resp.content))
+        assert expected == str(resp.content)
 
     def test_add_comment(self):
         dct = {'name': "John", "comment": "test"}

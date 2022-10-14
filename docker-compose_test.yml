@@ -9,11 +9,11 @@ services:
     ports:
       - "5432:5432"
 
-  server:
+  tests:
     build:
       context: .
       dockerfile: Dockerfile_test
-    container_name: news_portal
+    container_name: news_portal_test
     ports:
       - "8000:8000"
     depends_on:
@@ -25,4 +25,5 @@ services:
       DJANGO_SUPERUSER_USERNAME: "admin"
       DJANGO_SUPERUSER_EMAIL: "test@gmail.com"
       DJANGO_SUPERUSER_PASSWORD: "admin"
+      DJANGO_SETTINGS_MODULE: "news_portal.settings" # pytest
       WAIT_HOSTS: postgres:5432
